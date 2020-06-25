@@ -27,6 +27,7 @@ public class WriteJSON{
 	
 	public void write(List<String> ubiJSON) throws IOException {
 		
+
 		for (String l : ubiJSON) {
 			//System.out.println(l);
 			try {

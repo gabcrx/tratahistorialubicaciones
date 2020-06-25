@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import trataHistorialUbicaciones.ReadJSON;
 import trataHistorialUbicaciones.WriteJSON;
@@ -14,6 +15,16 @@ import trataHistorialUbicaciones.WriteJSON;
 public class Main {
 
 	public static void main(String[] args) throws IOException {
+		String[] columnas = new String[2];
+		//Cabeceras a mostrar
+		if(args.length < 2) {
+			columnas[0] = "latitudeE7";
+			columnas[1] = "longitudeE7";
+
+		}else {
+			columnas = args[1].split(",");
+		}
+		
 		
 		//Comprobar si la ruta especificada es válida
 		Path path = Paths.get(args[0]);
@@ -44,14 +55,14 @@ public class Main {
 				//Comprobar si se trata de un archivo json
 				if (extension.equalsIgnoreCase("JSON")) {
 					System.out.println("Archivo seleccionado: " + file.getName());
-					ReadJSON reader = new ReadJSON(file);
+					ReadJSON reader = new ReadJSON(file, columnas);
 					reader.open();
 				    if (!reader.read()) {
 				    	reader.close();
 				    } else {
 				    	reader.close();
 				    	
-				    	WriteJSON writer = new WriteJSON(file.getName()); 
+				    	WriteJSON writer = new WriteJSON(path + "\\" + file.getName()); 
 				    	writer.open();
 				    	writer.write(reader.getLectura());
 				    	writer.close();

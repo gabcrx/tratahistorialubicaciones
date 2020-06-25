@@ -25,10 +25,12 @@ public class ReadJSON {
 	public FileInputStream fip;
 	public JsonParser parser;
 	private List<String> lectura;
+	private String[] columnas;
 		
-	public ReadJSON(File file){
+	public ReadJSON(File file, String[] columnas){
 		
 		this.file = file;
+		this.columnas = columnas;
 		
 	}
 	
@@ -65,12 +67,30 @@ public class ReadJSON {
 						lectura = parser.getArrayStream()
 									.map(n -> {  
 										JsonObject j = n.asJsonObject();
-										String s = j.get("latitudeE7").toString() + "," +
-												j.get("longitudeE7").toString() ;
+										
+										String s = "";
+										int cnt = 0;
+										for (String c : columnas) {
+											
+											if (!j.containsKey(c)) {
+												continue;
+											};
+											
+											if (cnt == 0) {
+												s = j.get(c).toString();
+											}else {
+											s = s + "," + j.get(c).toString();
+											}
+											cnt++;
+										}
+										
+										/*String s = j.get("latitudeE7").toString() + "," +
+												j.get("longitudeE7").toString() ;*/
 										return s;    
 										})
 									.collect(Collectors.toList());
 					} catch (Exception e) {
+						e.getStackTrace();
 						return false;
 					}
 				}
