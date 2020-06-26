@@ -25,12 +25,14 @@ public class Main {
 			columnas = args[1].split(",");
 		}
 		
-		
+		Path path ;
+		if(args.length < 1) {
+			path = Paths.get(System.getProperty("user.dir"));
+		}else {
+			path = Paths.get(args[0]);
+		}
 		//Comprobar si la ruta especificada es válida
-		Path path = Paths.get(args[0]);
-		System.out.println(path);
 		
-		System.out.println(System.getProperty("user.dir"));
 		//Si la ruta no existe, se utiliza la ruta actual
 		if (!Files.exists(path)) {
 			path = Paths.get(System.getProperty("user.dir"));
